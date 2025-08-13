@@ -3,10 +3,6 @@
         <Login />
     </div>
    
-    <div>
-        <Cart />
-    </div>
-
     <div style="font-family: sans-serif; text-align: center; margin-top: 50px;">
         <h1>Compteur : {{ counter.count }}</h1>
         <button @click="counter.increment">+1</button>
