@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: API Nuxt Auth
+  version: 1.0.0
+  description: Documentation de l'API pour l'inscription et la connexion
+
+paths:
+  /api/register:
+    post:
+      summary: Inscrire un nouvel utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                prenom:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - nom
+                - email
+                - password
+      responses:
+        '200':
+          description: Inscription réussie
+        '400':
+          description: Requête invalide ou utilisateur déjà existant
+
+  /api/login:
+    post:
+      summary: Connecter un utilisateur existant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Connexion réussie
+        '401':
+          description: Email ou mot de passe incorrect

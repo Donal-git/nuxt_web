@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.2",
+    "@prisma/client": "^6.13.0",
+    "nuxt": "^4.0.1",
+    "pinia": "^3.0.3",
+    "swagger-ui": "^5.27.1",
+    "swagger-ui-dist": "^5.27.1",
+    "swagger-ui-express": "^5.0.1",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.2.0",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/yamljs": "^0.2.34",
+    "prisma": "^6.13.0"
+  }
+}
