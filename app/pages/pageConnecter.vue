@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     <div class="card">
       <div class="avatar">{{ initials }}</div>
@@ -29,7 +29,44 @@ const initials = computed(() => {
 const logout = () => {
   alert('Déconnexion réussie')
 }
+</script> -->
+
+<template>
+  <div class="container">
+    <div class="card">
+      <div class="avatar">{{ initials }}</div>
+
+      <h1 class="title">Bienvenue, {{ userStore.nom }} 👋</h1>
+      <p class="subtitle">
+        Vous êtes connecté avec l'email <strong>{{ userStore.email }}</strong>
+      </p>
+
+      <button class="logout-btn" @click="logout">Se déconnecter</button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useUserStore } from '~/stores/user'
+
+const userStore = useUserStore()
+
+const initials = computed(() => {
+  if (!userStore.nom) return ''
+  return userStore.nom
+    .split(' ')
+    .map(part => part[0]?.toUpperCase())
+    .join('')
+})
+
+const logout = () => {
+  userStore.clearUser()
+  alert('Déconnexion réussie')
+}
 </script>
+
+
 
 
 <style scoped>

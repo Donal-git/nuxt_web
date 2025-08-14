@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     <h2>Connexion</h2>
 
@@ -81,7 +81,93 @@ async function connecter() {
   success.value = false
   }
 }
-</script> 
+</script>  -->
+
+
+
+
+
+<template>
+  <div class="container">
+    <h2>Connexion</h2>
+
+    <form @submit.prevent="connecter" class="form">
+      <div class="form-group">
+        <label for="email">Email :</label>
+        <input id="email" v-model="email" type="email" placeholder="Votre email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe :</label>
+        <input id="password" v-model="password" type="password" placeholder="Votre mot de passe" required />
+      </div>
+
+      <div>
+        <p>Nom : {{ userStore.nom }}</p>
+        <p>Email : {{ userStore.email }}</p>
+      </div>
+
+      <button type="submit">Se connecter</button>
+
+      <p v-if="message" :class="['message', success ? 'success' : 'error']">
+        {{ message }}
+      </p>
+      
+      <div class="link">
+        <span>Pas encore de compte ?</span>
+        <NuxtLink to="/inscription">S’inscrire</NuxtLink>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import axios from 'axios'
+import { useUserStore } from '~/stores/user'
+
+const email = ref('')
+const password = ref('')
+const message = ref('')
+const success = ref(false)
+
+const userStore = useUserStore()
+
+async function connecter() {
+  message.value = ''
+  success.value = false
+
+  if (!email.value || !password.value) {
+    message.value = 'Veuillez remplir tous les champs'
+    return
+  }
+
+  try {
+    // Envoi de la requête POST avec axios
+    const res = await axios.post('/api/login', {
+      email: email.value,
+      password: password.value
+    })
+
+    message.value = res.data.message
+    success.value = res.data.success
+
+    if (res.data.success) {
+      // Met à jour le store avec les infos reçues
+      userStore.setUser(res.data.utilisateur.nom, res.data.utilisateur.email)
+
+      setTimeout(() => {
+        navigateTo('/pageConnecter')
+      }, 2000)
+    }
+
+  } catch (error: any) {
+    console.error(error)
+    message.value = error.response?.data?.message || 'Erreur de connexion'
+    success.value = false
+  }
+}
+</script>
 
 
 <style scoped>

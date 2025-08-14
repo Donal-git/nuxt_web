@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     
 
@@ -95,7 +95,102 @@ function viderFormulaire() {
   email.value = ''
   password.value = ''
 }
+</script> -->
+
+
+<template>
+  <div class="container">
+    <form @submit.prevent="inscrire" class="form">
+      <h2>Inscription</h2>
+
+      <div class="form-group">
+        <label for="nom">Nom :
+          <input id="nom" v-model="nom" type="text" placeholder="Votre nom" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="prenom">Prénom :
+          <input id="prenom" v-model="prenom" type="text" placeholder="Votre prénom" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email :
+          <input id="email" v-model="email" type="email" placeholder="Votre email" required />
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe :
+          <input id="password" v-model="password" type="password" placeholder="Votre mot de passe" required />
+        </label>
+      </div>
+
+      <button type="submit">S’inscrire</button>
+
+      <p v-if="message" :class="['message', success ? 'success' : 'error']">
+        {{ message }}
+      </p>
+
+      <button type="button" class="vider" @click="viderFormulaire">Vider le champs</button>
+
+      <div class="link">
+        <span>Déjà inscrit ?</span>
+        <NuxtLink to="/">Se connecter</NuxtLink>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import axios from 'axios'
+
+const nom = ref('')
+const prenom = ref('')
+const email = ref('')
+const password = ref('')
+const message = ref('')
+const success = ref(false)
+
+async function inscrire() {
+  message.value = ''
+  success.value = false
+
+  try {
+    const res = await axios.post('/api/register', {
+      nom: nom.value,
+      prenom: prenom.value,
+      email: email.value,
+      password: password.value
+    })
+
+    message.value = res.data.message
+    success.value = res.data.success
+
+    if (res.data.success) {
+      viderFormulaire()
+
+      setTimeout(() => {
+        navigateTo('/')
+      }, 2000)
+    }
+  } catch (error: any) {
+    console.error(error)
+    message.value = error.response?.data?.message || 'Erreur lors de l’inscription'
+    success.value = false
+  }
+}
+
+function viderFormulaire() {
+  nom.value = ''
+  prenom.value = ''
+  email.value = ''
+  password.value = ''
+}
 </script>
+
 
 <style scoped>
 .container {
