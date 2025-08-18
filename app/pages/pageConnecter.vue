@@ -47,26 +47,36 @@ const logout = () => {
 </template>
 
 <script setup>
+// On importe la fonction `computed` de Vue. `computed` permet de créer des propriétés dérivées (calculées) 
+// basées sur des données réactives.
 import { computed } from 'vue'
+
+// On importe notre store Pinia défini dans `stores/user.ts`. Ce store gère l’état de l’utilisateur (nom, email).
 import { useUserStore } from '~/stores/user'
 
+// On initialise une instance du store utilisateur.
+// `userStore` donne accès à `state` (nom, email) et aux `actions` (setUser, clearUser).
 const userStore = useUserStore()
 
+// On définit une propriété calculée `initials`. Son rôle est de générer les initiales du nom de l’utilisateur.
+// Exemple : "Jean Dupont" => "JD"
 const initials = computed(() => {
+  // Si aucun nom n’est défini, on retourne une chaîne vide.
   if (!userStore.nom) return ''
+
+  // Sinon, on découpe le nom par espace (ex: "Jean Dupont" -> ["Jean", "Dupont"]), on prend la première lettre de chaque partie (ex: "J" et "D"), on met ces lettres en majuscule, puis on les concatène pour obtenir les initiales ("JD").
   return userStore.nom
     .split(' ')
-    .map(part => part[0]?.toUpperCase())
+    .map(part => part[0]?.toUpperCase()) // `?.` évite une erreur si `part` est vide
     .join('')
 })
 
+// On définit une fonction `logout` qui déconnecte l’utilisateur. Elle appelle l’action `clearUser` du store pour vider le nom et l’email, puis affiche une alerte de confirmation.
 const logout = () => {
   userStore.clearUser()
   alert('Déconnexion réussie')
 }
 </script>
-
-
 
 
 <style scoped>
